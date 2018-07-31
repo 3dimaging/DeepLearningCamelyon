@@ -50,7 +50,4 @@ PYTHONPATH="/opt/ASAP/bin":"${PYTHONPATH}"
 >>> plt.imshow(tile)
 >>>plt.show()
 
-or using openslide
-slide = openslide.open_slide(slide_path)
 
-thumbnail = slide.get_thumbnail((slide.dimensions[0] / 256, slide.dimensions[1] / 256))
