@@ -1,0 +1,382 @@
+#! /usr/bin/env python3
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import os.path as osp
+import openslide
+from pathlib import Path
+from skimage.filters import threshold_otsu
+import glob
+#before importing HDFStore, make sure 'tables' is installed by pip3 install tables
+from pandas import HDFStore
+from openslide.deepzoom import DeepZoomGenerator
+#import tensorflow as tf
+
+#config = tf.ConfigProto()
+#config.gpu_options.allow_growth = True
+#session = tf.Session(config=config)
+
+print('Hi, patch extraction can take a while, please be patient...')
+slide_path = '/home/wli/Downloads/CAMELYON16/training/tumor'
+#anno_path = '/home/wli/Downloads/CAMELYON16/training/Lesion_annotations'
+BASE_TRUTH_DIR = '/home/wli/Downloads/CAMELYON16/masking'
+slide_paths = glob.glob(osp.join(slide_path, '*.tif'))
+slide_paths.sort()
+BASE_TRUTH_DIRS = glob.glob(osp.join(BASE_TRUTH_DIR, '*.tif'))
+BASE_TRUTH_DIRS.sort()
+#image_pair = zip(tumor_paths, anno_tumor_paths)  
+#image_pair = list(image_mask_pair)
+
+sampletotal = pd.DataFrame([])
+i=0
+while i < len(slide_paths):
+    #sampletotal = pd.DataFrame([])
+    base_truth_dir = Path(BASE_TRUTH_DIR)
+    slide_contains_tumor = osp.basename(slide_paths[i]).startswith('tumor_')
+    
+    with openslide.open_slide(slide_paths[i]) as slide:
+        thumbnail = slide.get_thumbnail((slide.dimensions[0] / 224, slide.dimensions[1] / 224))
+    
+        thumbnail_grey = np.array(thumbnail.convert('L')) # convert to grayscale
+        thresh = threshold_otsu(thumbnail_grey)
+        binary = thumbnail_grey > thresh
+    
+        patches = pd.DataFrame(pd.DataFrame(binary).stack())
+        patches['is_tissue'] = ~patches[0]
+        patches.drop(0, axis=1, inplace=True)
+        patches['slide_path'] = slide_paths[i]
+    
+    if slide_contains_tumor:
+        truth_slide_path = base_truth_dir / osp.basename(slide_paths[i]).replace('.tif', '_mask.tif')
+        with openslide.open_slide(str(truth_slide_path)) as truth:
+            thumbnail_truth = truth.get_thumbnail((truth.dimensions[0] / 224, truth.dimensions[1] / 224)) 
+        
+        patches_y = pd.DataFrame(pd.DataFrame(np.array(thumbnail_truth.convert("L"))).stack())
+        patches_y['is_tumor'] = patches_y[0] > 0
+        patches_y.drop(0, axis=1, inplace=True)
+
+        samples = pd.concat([patches, patches_y], axis=1)
+        #sampletotal.append(pd.concat([patches, patches_y], axis=1))
+    else:
+        samples = patches
+        samples['is_tumor'] = False
+        #patches['is_tumor'] = False
+        #sampletotal.append(patches)
+            
+       
+        
+    #if filter_non_tissue:
+    samples = samples[samples.is_tissue == True] # remove patches with no tissue
+    samples['tile_loc'] = list(samples.index)
+    samples.reset_index(inplace=True, drop=True)
+        
+    sampletotal=sampletotal.append(samples, ignore_index=True)
+        
+    i=i+1
+        
+        
+
+# randomly drop normal patches to match the number of tumor patches
+idx=sampletotal.index[sampletotal['is_tumor'] == False].tolist()
+drop_indices = np.random.choice(idx, 1800000, replace=False)
+sampletotal_subset = sampletotal.drop(drop_indices)
+# reorder the index. this is important
+sampletotal_subset.reset_index(drop=True, inplace=True)
+
+NUM_SAMPLES = 500
+sampletotal_subset= sampletotal_subset.sample(NUM_SAMPLES, random_state=42)
+ 
+sampletotal_subset.reset_index(drop=True, inplace=True)
+
+print(sampletotal_subset.is_tumor.value_counts())
+
+# real picture patches generation function. In the function there is save command to save numpy array da# ta as .npz format which is independent of platform. 
+
+import cv2
+from keras.utils.np_utils import to_categorical
+
+NUM_CLASSES = 2 # not_tumor, tumor
+
+def gen_imgs(samples, batch_size, base_truth_dir=BASE_TRUTH_DIR, shuffle=True):
+   
+    
+    num_samples = len(samples)
+    while 1: # Loop forever so the generator never terminates
+        if shuffle:
+            samples = samples.sample(frac=1) # shuffle samples
+        
+        for offset in range(0, num_samples, batch_size):
+            batch_samples = samples.iloc[offset:offset+batch_size]
+        
+            images = []
+            masks = []
+            labels = []
+            for _, batch_sample in batch_samples.iterrows():
+                slide_contains_tumor = osp.basename(batch_sample.slide_path).startswith('tumor_')
+                
+                with openslide.open_slide(batch_sample.slide_path) as slide:
+                    tiles = DeepZoomGenerator(slide, tile_size=224, overlap=0, limit_bounds=False)
+                    img = tiles.get_tile(tiles.level_count-1, batch_sample.tile_loc[::-1])
+                    
+                # only load truth mask for tumor slides
+                if slide_contains_tumor:
+                    truth_slide_path = osp.join(base_truth_dir, osp.basename(batch_sample.slide_path).replace('.tif', '_mask.tif'))
+                    with openslide.open_slide(str(truth_slide_path)) as truth:
+                        truth_tiles = DeepZoomGenerator(truth, tile_size=224, overlap=0, limit_bounds=False)
+                        mask = truth_tiles.get_tile(truth_tiles.level_count-1, batch_sample.tile_loc[::-1])
+                        mask = (cv2.cvtColor(np.array(mask), cv2.COLOR_RGB2GRAY) > 0).astype(int)
+                        label = int(np.mean(mask) >=0.5)
+                else:
+                    mask = np.zeros((224, 224))
+                    label = 0
+                images.append(np.array(img))
+                masks.append(mask)
+                labels.append(label)
+            X_train = np.array(images)
+            y_train = np.array(labels)
+            #y_train = to_categorical(y_train, num_classes=2) # make it to 0 and 1 labels
+            y_train = [y_train, y_train, y_train] #there are 3 output 
+            
+            #np.save('X_train.npy', X_train)
+            #np.save('y_train.npy', y_train)
+            
+            yield X_train, y_train
+
+#split patches into 20% validation dataset and 80% training dataset
+from sklearn.model_selection import StratifiedShuffleSplit
+
+# split samples into train and validation set
+# use StratifiedShuffleSplit to ensure both sets have same proportions of tumor patches
+split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+for train_index, test_index in split.split(sampletotal_subset, sampletotal_subset["is_tumor"]):
+        train_samples_subset = sampletotal_subset.loc[train_index]
+        validation_samples_subset = sampletotal_subset.loc[test_index]
+
+
+#split whole set of samples to train and validation sets
+
+#from sklearn.model_selection import StratifiedShuffleSplit
+
+# split samples into train and validation set
+# use StratifiedShuffleSplit to ensure both sets have same proportions of tumor patches
+##split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+##for train_index, test_index in split.split(sampletotal, sampletotal["is_tumor"]):
+##        train_samples = sampletotal.loc[train_index]
+##        validation_samples = sampletotal.loc[test_index]
+
+
+from keras.optimizers import SGD
+from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Dropout, Flatten, merge, Reshape, Activation
+from keras.datasets import cifar10
+from keras.regularizers import l2
+from keras.models import Model
+
+from sklearn.metrics import log_loss
+
+from googlenet_custom_layers import LRN, PoolHelper
+from keras.models import model_from_json
+
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler
+
+#from load_cifar10 import load_cifar10_data
+
+def googlenet_model(img_rows=224, img_cols=224, channel=3, num_classes=2):
+    """
+    GoogLeNet a.k.a. Inception v1 for Keras
+    Model Schema is based on 
+    https://gist.github.com/joelouismarino/a2ede9ab3928f999575423b9887abd14
+    ImageNet Pretrained Weights 
+    https://drive.google.com/open?id=0B319laiAPjU3RE1maU9MMlh2dnc
+    Blog Post: 
+    http://joelouismarino.github.io/blog_posts/blog_googlenet_keras.html
+    Parameters:
+      img_rows, img_cols - resolution of inputs
+      channel - 1 for grayscale, 3 for color 
+      num_classes - number of class labels for our classification task
+    """
+    
+    input = Input(shape=(channel, img_rows, img_cols))
+    conv1_7x7_s2 = Convolution2D(64,7,7,subsample=(2,2),border_mode='same',activation='relu',name='conv1/7x7_s2',W_regularizer=l2(0.0002))(input)
+    conv1_zero_pad = ZeroPadding2D(padding=(1, 1))(conv1_7x7_s2)
+    pool1_helper = PoolHelper()(conv1_zero_pad)
+    pool1_3x3_s2 = MaxPooling2D(pool_size=(3,3),strides=(2,2),border_mode='valid',name='pool1/3x3_s2')(pool1_helper)
+    pool1_norm1 = LRN(name='pool1/norm1')(pool1_3x3_s2)
+    conv2_3x3_reduce = Convolution2D(64,1,1,border_mode='same',activation='relu',name='conv2/3x3_reduce',W_regularizer=l2(0.0002))(pool1_norm1)
+    conv2_3x3 = Convolution2D(192,3,3,border_mode='same',activation='relu',name='conv2/3x3',W_regularizer=l2(0.0002))(conv2_3x3_reduce)
+    conv2_norm2 = LRN(name='conv2/norm2')(conv2_3x3)
+    conv2_zero_pad = ZeroPadding2D(padding=(1, 1))(conv2_norm2)
+    pool2_helper = PoolHelper()(conv2_zero_pad)
+    pool2_3x3_s2 = MaxPooling2D(pool_size=(3,3),strides=(2,2),border_mode='valid',name='pool2/3x3_s2')(pool2_helper)
+    
+    inception_3a_1x1 = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_3a/1x1',W_regularizer=l2(0.0002))(pool2_3x3_s2)
+    inception_3a_3x3_reduce = Convolution2D(96,1,1,border_mode='same',activation='relu',name='inception_3a/3x3_reduce',W_regularizer=l2(0.0002))(pool2_3x3_s2)
+    inception_3a_3x3 = Convolution2D(128,3,3,border_mode='same',activation='relu',name='inception_3a/3x3',W_regularizer=l2(0.0002))(inception_3a_3x3_reduce)
+    inception_3a_5x5_reduce = Convolution2D(16,1,1,border_mode='same',activation='relu',name='inception_3a/5x5_reduce',W_regularizer=l2(0.0002))(pool2_3x3_s2)
+    inception_3a_5x5 = Convolution2D(32,5,5,border_mode='same',activation='relu',name='inception_3a/5x5',W_regularizer=l2(0.0002))(inception_3a_5x5_reduce)
+    inception_3a_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_3a/pool')(pool2_3x3_s2)
+    inception_3a_pool_proj = Convolution2D(32,1,1,border_mode='same',activation='relu',name='inception_3a/pool_proj',W_regularizer=l2(0.0002))(inception_3a_pool)
+    inception_3a_output = merge([inception_3a_1x1,inception_3a_3x3,inception_3a_5x5,inception_3a_pool_proj],mode='concat',concat_axis=1,name='inception_3a/output')
+    
+    inception_3b_1x1 = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_3b/1x1',W_regularizer=l2(0.0002))(inception_3a_output)
+    inception_3b_3x3_reduce = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_3b/3x3_reduce',W_regularizer=l2(0.0002))(inception_3a_output)
+    inception_3b_3x3 = Convolution2D(192,3,3,border_mode='same',activation='relu',name='inception_3b/3x3',W_regularizer=l2(0.0002))(inception_3b_3x3_reduce)
+    inception_3b_5x5_reduce = Convolution2D(32,1,1,border_mode='same',activation='relu',name='inception_3b/5x5_reduce',W_regularizer=l2(0.0002))(inception_3a_output)
+    inception_3b_5x5 = Convolution2D(96,5,5,border_mode='same',activation='relu',name='inception_3b/5x5',W_regularizer=l2(0.0002))(inception_3b_5x5_reduce)
+    inception_3b_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_3b/pool')(inception_3a_output)
+    inception_3b_pool_proj = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_3b/pool_proj',W_regularizer=l2(0.0002))(inception_3b_pool)
+    inception_3b_output = merge([inception_3b_1x1,inception_3b_3x3,inception_3b_5x5,inception_3b_pool_proj],mode='concat',concat_axis=1,name='inception_3b/output')
+    
+    inception_3b_output_zero_pad = ZeroPadding2D(padding=(1, 1))(inception_3b_output)
+    pool3_helper = PoolHelper()(inception_3b_output_zero_pad)
+    pool3_3x3_s2 = MaxPooling2D(pool_size=(3,3),strides=(2,2),border_mode='valid',name='pool3/3x3_s2')(pool3_helper)
+    
+    inception_4a_1x1 = Convolution2D(192,1,1,border_mode='same',activation='relu',name='inception_4a/1x1',W_regularizer=l2(0.0002))(pool3_3x3_s2)
+    inception_4a_3x3_reduce = Convolution2D(96,1,1,border_mode='same',activation='relu',name='inception_4a/3x3_reduce',W_regularizer=l2(0.0002))(pool3_3x3_s2)
+    inception_4a_3x3 = Convolution2D(208,3,3,border_mode='same',activation='relu',name='inception_4a/3x3',W_regularizer=l2(0.0002))(inception_4a_3x3_reduce)
+    inception_4a_5x5_reduce = Convolution2D(16,1,1,border_mode='same',activation='relu',name='inception_4a/5x5_reduce',W_regularizer=l2(0.0002))(pool3_3x3_s2)
+    inception_4a_5x5 = Convolution2D(48,5,5,border_mode='same',activation='relu',name='inception_4a/5x5',W_regularizer=l2(0.0002))(inception_4a_5x5_reduce)
+    inception_4a_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_4a/pool')(pool3_3x3_s2)
+    inception_4a_pool_proj = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_4a/pool_proj',W_regularizer=l2(0.0002))(inception_4a_pool)
+    inception_4a_output = merge([inception_4a_1x1,inception_4a_3x3,inception_4a_5x5,inception_4a_pool_proj],mode='concat',concat_axis=1,name='inception_4a/output')
+    
+    loss1_ave_pool = AveragePooling2D(pool_size=(5,5),strides=(3,3),name='loss1/ave_pool')(inception_4a_output)
+    loss1_conv = Convolution2D(128,1,1,border_mode='same',activation='relu',name='loss1/conv',W_regularizer=l2(0.0002))(loss1_ave_pool)
+    loss1_flat = Flatten()(loss1_conv)
+    loss1_fc = Dense(1024,activation='relu',name='loss1/fc',W_regularizer=l2(0.0002))(loss1_flat)
+    loss1_drop_fc = Dropout(0.7)(loss1_fc)
+    loss1_classifier = Dense(1000,name='loss1/classifier',W_regularizer=l2(0.0002))(loss1_drop_fc)
+    loss1_classifier_act = Activation('softmax')(loss1_classifier)
+    
+    inception_4b_1x1 = Convolution2D(160,1,1,border_mode='same',activation='relu',name='inception_4b/1x1',W_regularizer=l2(0.0002))(inception_4a_output)
+    inception_4b_3x3_reduce = Convolution2D(112,1,1,border_mode='same',activation='relu',name='inception_4b/3x3_reduce',W_regularizer=l2(0.0002))(inception_4a_output)
+    inception_4b_3x3 = Convolution2D(224,3,3,border_mode='same',activation='relu',name='inception_4b/3x3',W_regularizer=l2(0.0002))(inception_4b_3x3_reduce)
+    inception_4b_5x5_reduce = Convolution2D(24,1,1,border_mode='same',activation='relu',name='inception_4b/5x5_reduce',W_regularizer=l2(0.0002))(inception_4a_output)
+    inception_4b_5x5 = Convolution2D(64,5,5,border_mode='same',activation='relu',name='inception_4b/5x5',W_regularizer=l2(0.0002))(inception_4b_5x5_reduce)
+    inception_4b_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_4b/pool')(inception_4a_output)
+    inception_4b_pool_proj = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_4b/pool_proj',W_regularizer=l2(0.0002))(inception_4b_pool)
+    inception_4b_output = merge([inception_4b_1x1,inception_4b_3x3,inception_4b_5x5,inception_4b_pool_proj],mode='concat',concat_axis=1,name='inception_4b_output')
+    
+    inception_4c_1x1 = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_4c/1x1',W_regularizer=l2(0.0002))(inception_4b_output)
+    inception_4c_3x3_reduce = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_4c/3x3_reduce',W_regularizer=l2(0.0002))(inception_4b_output)
+    inception_4c_3x3 = Convolution2D(256,3,3,border_mode='same',activation='relu',name='inception_4c/3x3',W_regularizer=l2(0.0002))(inception_4c_3x3_reduce)
+    inception_4c_5x5_reduce = Convolution2D(24,1,1,border_mode='same',activation='relu',name='inception_4c/5x5_reduce',W_regularizer=l2(0.0002))(inception_4b_output)
+    inception_4c_5x5 = Convolution2D(64,5,5,border_mode='same',activation='relu',name='inception_4c/5x5',W_regularizer=l2(0.0002))(inception_4c_5x5_reduce)
+    inception_4c_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_4c/pool')(inception_4b_output)
+    inception_4c_pool_proj = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_4c/pool_proj',W_regularizer=l2(0.0002))(inception_4c_pool)
+    inception_4c_output = merge([inception_4c_1x1,inception_4c_3x3,inception_4c_5x5,inception_4c_pool_proj],mode='concat',concat_axis=1,name='inception_4c/output')
+    
+    inception_4d_1x1 = Convolution2D(112,1,1,border_mode='same',activation='relu',name='inception_4d/1x1',W_regularizer=l2(0.0002))(inception_4c_output)
+    inception_4d_3x3_reduce = Convolution2D(144,1,1,border_mode='same',activation='relu',name='inception_4d/3x3_reduce',W_regularizer=l2(0.0002))(inception_4c_output)
+    inception_4d_3x3 = Convolution2D(288,3,3,border_mode='same',activation='relu',name='inception_4d/3x3',W_regularizer=l2(0.0002))(inception_4d_3x3_reduce)
+    inception_4d_5x5_reduce = Convolution2D(32,1,1,border_mode='same',activation='relu',name='inception_4d/5x5_reduce',W_regularizer=l2(0.0002))(inception_4c_output)
+    inception_4d_5x5 = Convolution2D(64,5,5,border_mode='same',activation='relu',name='inception_4d/5x5',W_regularizer=l2(0.0002))(inception_4d_5x5_reduce)
+    inception_4d_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_4d/pool')(inception_4c_output)
+    inception_4d_pool_proj = Convolution2D(64,1,1,border_mode='same',activation='relu',name='inception_4d/pool_proj',W_regularizer=l2(0.0002))(inception_4d_pool)
+    inception_4d_output = merge([inception_4d_1x1,inception_4d_3x3,inception_4d_5x5,inception_4d_pool_proj],mode='concat',concat_axis=1,name='inception_4d/output')
+    
+    loss2_ave_pool = AveragePooling2D(pool_size=(5,5),strides=(3,3),name='loss2/ave_pool')(inception_4d_output)
+    loss2_conv = Convolution2D(128,1,1,border_mode='same',activation='relu',name='loss2/conv',W_regularizer=l2(0.0002))(loss2_ave_pool)
+    loss2_flat = Flatten()(loss2_conv)
+    loss2_fc = Dense(1024,activation='relu',name='loss2/fc',W_regularizer=l2(0.0002))(loss2_flat)
+    loss2_drop_fc = Dropout(0.7)(loss2_fc)
+    loss2_classifier = Dense(1000,name='loss2/classifier',W_regularizer=l2(0.0002))(loss2_drop_fc)
+    loss2_classifier_act = Activation('softmax')(loss2_classifier)
+    
+    inception_4e_1x1 = Convolution2D(256,1,1,border_mode='same',activation='relu',name='inception_4e/1x1',W_regularizer=l2(0.0002))(inception_4d_output)
+    inception_4e_3x3_reduce = Convolution2D(160,1,1,border_mode='same',activation='relu',name='inception_4e/3x3_reduce',W_regularizer=l2(0.0002))(inception_4d_output)
+    inception_4e_3x3 = Convolution2D(320,3,3,border_mode='same',activation='relu',name='inception_4e/3x3',W_regularizer=l2(0.0002))(inception_4e_3x3_reduce)
+    inception_4e_5x5_reduce = Convolution2D(32,1,1,border_mode='same',activation='relu',name='inception_4e/5x5_reduce',W_regularizer=l2(0.0002))(inception_4d_output)
+    inception_4e_5x5 = Convolution2D(128,5,5,border_mode='same',activation='relu',name='inception_4e/5x5',W_regularizer=l2(0.0002))(inception_4e_5x5_reduce)
+    inception_4e_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_4e/pool')(inception_4d_output)
+    inception_4e_pool_proj = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_4e/pool_proj',W_regularizer=l2(0.0002))(inception_4e_pool)
+    inception_4e_output = merge([inception_4e_1x1,inception_4e_3x3,inception_4e_5x5,inception_4e_pool_proj],mode='concat',concat_axis=1,name='inception_4e/output')
+    
+    inception_4e_output_zero_pad = ZeroPadding2D(padding=(1, 1))(inception_4e_output)
+    pool4_helper = PoolHelper()(inception_4e_output_zero_pad)
+    pool4_3x3_s2 = MaxPooling2D(pool_size=(3,3),strides=(2,2),border_mode='valid',name='pool4/3x3_s2')(pool4_helper)
+    
+    inception_5a_1x1 = Convolution2D(256,1,1,border_mode='same',activation='relu',name='inception_5a/1x1',W_regularizer=l2(0.0002))(pool4_3x3_s2)
+    inception_5a_3x3_reduce = Convolution2D(160,1,1,border_mode='same',activation='relu',name='inception_5a/3x3_reduce',W_regularizer=l2(0.0002))(pool4_3x3_s2)
+    inception_5a_3x3 = Convolution2D(320,3,3,border_mode='same',activation='relu',name='inception_5a/3x3',W_regularizer=l2(0.0002))(inception_5a_3x3_reduce)
+    inception_5a_5x5_reduce = Convolution2D(32,1,1,border_mode='same',activation='relu',name='inception_5a/5x5_reduce',W_regularizer=l2(0.0002))(pool4_3x3_s2)
+    inception_5a_5x5 = Convolution2D(128,5,5,border_mode='same',activation='relu',name='inception_5a/5x5',W_regularizer=l2(0.0002))(inception_5a_5x5_reduce)
+    inception_5a_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_5a/pool')(pool4_3x3_s2)
+    inception_5a_pool_proj = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_5a/pool_proj',W_regularizer=l2(0.0002))(inception_5a_pool)
+    inception_5a_output = merge([inception_5a_1x1,inception_5a_3x3,inception_5a_5x5,inception_5a_pool_proj],mode='concat',concat_axis=1,name='inception_5a/output')
+    
+    inception_5b_1x1 = Convolution2D(384,1,1,border_mode='same',activation='relu',name='inception_5b/1x1',W_regularizer=l2(0.0002))(inception_5a_output)
+    inception_5b_3x3_reduce = Convolution2D(192,1,1,border_mode='same',activation='relu',name='inception_5b/3x3_reduce',W_regularizer=l2(0.0002))(inception_5a_output)
+    inception_5b_3x3 = Convolution2D(384,3,3,border_mode='same',activation='relu',name='inception_5b/3x3',W_regularizer=l2(0.0002))(inception_5b_3x3_reduce)
+    inception_5b_5x5_reduce = Convolution2D(48,1,1,border_mode='same',activation='relu',name='inception_5b/5x5_reduce',W_regularizer=l2(0.0002))(inception_5a_output)
+    inception_5b_5x5 = Convolution2D(128,5,5,border_mode='same',activation='relu',name='inception_5b/5x5',W_regularizer=l2(0.0002))(inception_5b_5x5_reduce)
+    inception_5b_pool = MaxPooling2D(pool_size=(3,3),strides=(1,1),border_mode='same',name='inception_5b/pool')(inception_5a_output)
+    inception_5b_pool_proj = Convolution2D(128,1,1,border_mode='same',activation='relu',name='inception_5b/pool_proj',W_regularizer=l2(0.0002))(inception_5b_pool)
+    inception_5b_output = merge([inception_5b_1x1,inception_5b_3x3,inception_5b_5x5,inception_5b_pool_proj],mode='concat',concat_axis=1,name='inception_5b/output')
+    
+    pool5_7x7_s1 = AveragePooling2D(pool_size=(7,7),strides=(1,1),name='pool5/7x7_s2')(inception_5b_output)
+    loss3_flat = Flatten()(pool5_7x7_s1)
+    pool5_drop_7x7_s1 = Dropout(0.4)(loss3_flat)
+    loss3_classifier = Dense(1000,name='loss3/classifier',W_regularizer=l2(0.0002))(pool5_drop_7x7_s1)
+    loss3_classifier_act = Activation('softmax',name='prob')(loss3_classifier)
+    
+    # Create model
+    model = Model(input=input, output=[loss1_classifier_act,loss2_classifier_act,loss3_classifier_act])
+    
+    # Load ImageNet pre-trained data 
+    #model.load_weights('imagenet_models/googlenet_weights.h5') #do not trained models for now
+    
+
+    # Truncate and replace softmax layer for transfer learning
+    # Cannot use model.layers.pop() since model is not of Sequential() type
+    # The method below works since pre-trained weights are stored in layers but not in the model
+    loss3_classifier_statefarm = Dense(num_classes,name='loss3/classifier',W_regularizer=l2(0.0002))(pool5_drop_7x7_s1)
+    loss3_classifier_act_statefarm = Activation('softmax',name='prob')(loss3_classifier_statefarm)
+    loss2_classifier_statefarm = Dense(num_classes,name='loss2/classifier',W_regularizer=l2(0.0002))(loss2_drop_fc)
+    loss2_classifier_act_statefarm = Activation('softmax')(loss2_classifier_statefarm)
+    loss1_classifier_statefarm = Dense(num_classes,name='loss1/classifier',W_regularizer=l2(0.0002))(loss1_drop_fc)
+    loss1_classifier_act_statefarm = Activation('softmax')(loss1_classifier_statefarm)
+
+    # Create another model with our customized softmax
+    model = Model(input=input, output=[loss1_classifier_act_statefarm,loss2_classifier_act_statefarm,loss3_classifier_act_statefarm])
+
+    # Learning rate is changed to 0.001
+    sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
+    
+    return model
+
+
+
+model = googlenet_model()
+
+
+model_checkpoint = ModelCheckpoint('googlenet_camelyon.hdf5', monitor='loss',verbose=1, save_best_only=True)
+
+BATCH_SIZE = 32
+N_EPOCHS = 50
+
+from datetime import datetime
+
+
+train_generator = gen_imgs(train_samples_subset, BATCH_SIZE)
+validation_generator = gen_imgs(validation_samples_subset, BATCH_SIZE)
+
+# Train model
+train_start_time = datetime.now()
+model.fit_generator(train_generator, np.ceil(len(train_samples_subset) / BATCH_SIZE),
+    validation_data=validation_generator,
+    validation_steps=np.ceil(len(validation_samples_subset) / BATCH_SIZE),
+    epochs=N_EPOCHS, callbacks=[model_checkpoint])
+
+train_end_time = datetime.now()
+print("Model training time: %.1f minutes" % ((train_end_time - train_start_time).seconds / 60,))
+
+model.save('model0725-googlenet.h5')
+
+model_json = model.to_json()
+with open("modelgooglenet.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+#model.save_weights("modelunet.h5")
+print("Saving model to disk")
