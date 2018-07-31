@@ -1,30 +1,37 @@
-I did this under python3.5, which is the default version for python3 in Ubuntu
+# I did this under python3.5, which is the default version for python3 in Ubuntu 16.04
+# The installation of ASAP on Linux is not straightforward. 
+
+#First we install the dependent packages for ASAP
 
 sudo apt-get install python3-tk
 sudo apt-get install libpython3.6-dev
 pip3 install matplotlib numpy
 
 
-then download ASAP from the website: https://github.com/computationalpathologygroup/ASAP/releases
+#then download ASAP from the website: https://github.com/computationalpathologygroup/ASAP/releases
 
-and install it by the command:
+#install it by the command:
+
 dpkg -i ASAP-1.8-python36-Linux.deb
 
-to find where it was installed, use the command:
+# after that, a critical step is:
+sudo apt-get -F 
+
+#to find where it was installed, use the command:
 
 dpkg -L asap
 
-Now, we put it in the PYTHONPATH:
+#Now, we put it in the PYTHONPATH:
 
 PYTHONPATH="/opt/ASAP/bin":"${PYTHONPATH}"
  export PYTHONPATH
 
 
-now we can begin
+#now we can begin
 
-type command : python3
+#type command : python3
 
-then we enter python,
+#then we enter python,
 
 
 
