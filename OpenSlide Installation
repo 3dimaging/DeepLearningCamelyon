@@ -1,0 +1,12 @@
+# install openslide is very straightforward.
+
+sudo apt-get install openslide-tools
+pip install Pillow
+pip install openslide-python
+
+
+#use openslide after entering python3 shell
+
+slide = openslide.open_slide(slide_path)
+
+thumbnail = slide.get_thumbnail((slide.dimensions[0] / 256, slide.dimensions[1] / 256))
