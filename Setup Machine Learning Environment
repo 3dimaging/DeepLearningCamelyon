@@ -1,0 +1,2 @@
+# install opencv 2.0 
+pip3 install opencv-python
