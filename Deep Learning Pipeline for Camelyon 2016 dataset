@@ -9,7 +9,7 @@ Deep Learning Pipeline for Camelyon 2016 dataset
 
 2. ASAP installation and image display
 
-– Compare the ASAP and OpenSlide: ASAP doesn’t have detailed manual to describe its    commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
+– Compare the ASAP and OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
    
 3. Mask file generation, annotation visulization.
 
