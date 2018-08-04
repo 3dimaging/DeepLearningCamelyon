@@ -34,7 +34,7 @@ def convert_xml_df (file):
             Y_coord = ((Y_coord)*dims[1])/Yimageorg
             df_xml = df_xml.append(pd.Series([Name, Order, X_coord, Y_coord], index = dfcols), ignore_index=True)
             df_xml = pd.DataFrame(df_xml)
-        return (df_xml)  
+     return (df_xml)  
 
 annotations = convert_xml_df('/home/wli/Downloads/tumor_036.xml')
 
