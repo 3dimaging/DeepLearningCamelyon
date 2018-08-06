@@ -7,3 +7,6 @@ pip install keras==2.0.0.
 
 If you need more information about how ElementTree package handle XML file, please follow the link: 
 https://docs.python.org/3/library/xml.etree.elementtree.html
+
+It took me long time to figure it out:
+the model compiled under python 3.5 can not be loaded under python 3.6
