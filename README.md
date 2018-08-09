@@ -15,3 +15,7 @@ the model compiled under python 3.5 can not be loaded under python 3.6
 export PATH="$PATH:/usr/local/cuda-8.0/bin"
 export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64"
 export PYTHONPATH=”$PYTHONPATH:/opt/ASAP/bin”
+
+# install h5py package for model saving and revi
+sudo apt-get install libhdf5-serial-dev
+pip3 install h5py
