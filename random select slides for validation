@@ -1,0 +1,1 @@
+np.random.choice(slidepaths, len(slidepaths)/5, replace=False)
