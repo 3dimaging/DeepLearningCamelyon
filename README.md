@@ -1,6 +1,20 @@
+
+1. Install ASAP (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/ASAP%20installation%20(Ubuntu%2016.04))
+2. Image Visulization (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Display%20annotation%20over%20image)
+3. Mask Creation (DeepLearningCamelyon/mask creatation--updated)
+4. Set up machine learning environment (DeepLearningCamelyon/Setup Machine Learning Environment)
+
+
+
+
+
+
+
+
+
 # DeepLearningCamelyon
 
-use Keras 2.0.0 for googlenet(very important)
+use Keras 2.0.0 for googlenet(very important---may not be necessary)
 
 pip install keras==2.0.0.
 
