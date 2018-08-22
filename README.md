@@ -3,7 +3,7 @@
 2. Image Visulization (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Display%20annotation%20over%20image)
 3. Mask Creation (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/mask%20creatation--updated)
 4. Set up machine learning environment (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Setup%20Machine%20Learning%20Environment)
-5. Patch extraction (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/PatchExtraction)
+5. Patch extraction (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/PatchExtraction); 
 6. Model training for FCN (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 7. Model training for U-net (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Model%20training%20for%20unet)
 8. Model training for googlenet (https://github.com/DIDSR/DeepLearningCamelyon/blob/master/Model%20training%20for%20googelnet)
