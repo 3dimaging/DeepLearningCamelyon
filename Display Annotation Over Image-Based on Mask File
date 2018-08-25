@@ -1,0 +1,30 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import os.path as osp
+import openslide
+from pathlib import Path
+import cv2 as cv2
+
+BASE_TRUTH_DIR = Path('/Users/liw17/Downloads/camelyontest/Mask')
+
+slide_path = '/Users/liw17/Downloads/camelyontest/slides/tumor_026.tif'
+truth_path = osp.join(BASE_TRUTH_DIR, 'tumor_026_mask.tif')
+
+
+slide = openslide.open_slide(slide_path)
+truth = openslide.open_slide(truth_path)
+
+rgb_image = slide.read_region((0, 0), 4, slide.level_dimensions[4])
+rgb_mask = truth.read_region((0, 0), 4, slide.level_dimensions[4])
+
+grey = np.array(rgb_mask.convert('L'))
+rgb_imagenew = np.array(rgb_image)
+
+_, contours, _ = cv2.findContours(grey, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+cv2.drawContours(rgb_imagenew, contours, -1, (0, 0, 255), 5)
+
+# display original image with contours
+cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+cv2.imshow("output", rgb_imagenew)
+cv2.waitKey(0)
