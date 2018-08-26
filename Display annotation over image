@@ -43,18 +43,42 @@ def convert_xml_df (file):
 
 annotations = convert_xml_df('/home/wli/Downloads/tumor_036.xml')
 
-x_values = list(annotations['X'].get_values())
-y_values = list(annotations['Y'].get_values())
-xy = list(zip(x_values,y_values))
+#x_values = list(annotations['X'].get_values())
+#y_values = list(annotations['Y'].get_values())
+#xy = list(zip(x_values,y_values))
+def Remove(duplicate):
+    final_list = []
+    for num in duplicate:
+        if num not in final_list:
+            final_list.append(num)
+    return final_list
 
+final_list = Remove(annotations['Name'])
+
+coxy = [[] for x in range(len(final_list))]
+
+i = 0
+for n in final_list:
+    newx = annotations[annotations['Name']== n]['X']
+    newy = annotations[annotations['Name']== n]['Y']
+    print(n)
+    print(newx, newy)
+    newxy = list(zip(newx, newy))
+    coxy[i] = np.array(newxy, dtype=np.int32)
+    i=i+1
+    
 
 #image = cv2.imread('/home/wli/Downloads/tumor_036.xml', -1)
 tile =mr_image.getUCharPatch(0, 0, dims[0], dims[1], 4)
 #canvas = np.zeros((Ximage, Yimage, 3), np.uint8) # fix the division
-coords = np.array([xy], dtype=np.int32)
+#coords = np.array([xy], dtype=np.int32)
 
 #cv2.drawContours(canvas, [coords],-1, (0,255,0), -1)
-cv2.polylines(tile, [coords], isClosed=True, color=(0,0,255), thickness=5)
+#cv2.polylines(tile, [coords], isClosed=True, color=(0,0,255), thickness=5)
+
+cv2.drawContours(tile, coxy, -1, (0, 255, 0), 10)
+
+
 cv2.imshow("tile", tile);cv2.waitKey();cv2.destroyAllWindows()
 
 #cv2.fillConvexPoly(mask, coords,1)
