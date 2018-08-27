@@ -11,6 +11,8 @@ Testing listed as follows:
     - **Results:** 
 
 Table 1: Accuracy per fold with Truth and altered Truth Validation Testing
+
+
  |True|Epoch||Val_test|Epoch
 FDA|0.7551|112||0.7755|63
  |0.7083|93||0.75|72
