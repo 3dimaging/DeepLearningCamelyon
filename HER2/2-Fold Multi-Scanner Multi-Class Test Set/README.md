@@ -15,9 +15,13 @@
 
    1. Repeat i-x above
 
-
+### Dataset Details
 |Subset|Source|
 | :--: | :--: |
 |Scanner 1|FDA|
 |Scanner 2|NIH|
 |Scanner 3|Hamamatsu|
+
+ - 2-Fold x-val
+   - randomization = TRUE 
+   - random seed = 5
