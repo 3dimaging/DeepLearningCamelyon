@@ -4,8 +4,17 @@ Testing listed as follows:
 
 ## 1. Testing Change in Accuracy given Incorrectly labeled data
 1. Aperio_FDA -> 10 images label 1 -> label 3
-    - **Results:** all folds accuracy = 1
+    - **Results:** 
 2. Aperio_NIH -> 10 images label 2 -> label 1
-    - **Results:** all folds accuracy = 1
+    - **Results:** 
 3. Hamamatsu_2 -> 10 images label 3 -> label 1
-    - **Results:** all folds accuracy = 1
+    - **Results:** 
+
+Table 1: Accuracy per fold with Truth and altered Truth Validation Testing
+ |True|Epoch||Val_test|Epoch
+FDA|0.7551|112||0.7755|63
+ |0.7083|93||0.75|72
+
+
+
+
