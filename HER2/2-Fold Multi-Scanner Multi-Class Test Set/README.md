@@ -16,3 +16,8 @@
    1. Repeat i-x above
 
 
+|Subset|Source|
+| :--: | :--: |
+|Scanner 1|FDA|
+|Scanner 2|NIH|
+|Scanner 3|Hamamatsu|
