@@ -5,7 +5,7 @@
 
 # To Do
 1. No augmentations:
-
+   
    i.    Training/testing 50/50 split, all from Scanner 1 > Output=accuracy compared to mean score
    ii.   Training/testing 50/50 split, all from Scanner 2 > Output=accuracy compared to mean score
    iii.  Training/testing 50/50 split, all from Scanner 3 > Output=accuracy compared to mean score
