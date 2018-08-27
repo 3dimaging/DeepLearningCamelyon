@@ -1,0 +1,94 @@
+Deep Learning and Artificial Neural Networks
+
+Notes for a Project by the United States Food and Drug Administration Center for Devices and Radiologic Health Office of Science and Engineering Laboratories, Division of Imaging Diagnostic S R
+
+Author: Sarah N. Dudgeon, MPH
+
+Principal Investigator: Marios Gavrielides, PhD
+
+
+Deep Learning Model Types
+=========================
+Tensor Flow Back End/Keras Package:
+SEQUENTIAL:
+
+
+MODEL class with FUNCTIONAL API:
+
+
+MODEL SUBCLASSING:
+create your own fully-customizable model by subclassing the 'Model' class and implementing your own forward pass of the 'call' method
+
+CODE FOR BOTH TRADITIONAL KERAS MODELS:
+    model.layers is a flattened list of the layers comprising the model.
+    model.inputs is the list of input tensors of the model.
+    model.outputs is the list of output tensors of the model.
+    model.summary() prints a summary representation of your model. Shortcut for utils.print_summary
+    model.get_config() returns a dictionary containing the configuration of the model. The model can be reinstantiated from its config via:
+
+#CODE CHUNK
+config = model.get_config()
+model = Model.from_config(config)
+# or, for Sequential:
+model = Sequential.from_config(config)
+#
+
+    model.get_weights() returns a list of all weight tensors in the model, as Numpy arrays.
+    model.set_weights(weights) sets the values of the weights of the model, from a list of Numpy arrays. The arrays in the list should have the same shape as those returned by get_weights().
+    model.to_json() returns a representation of the model as a JSON string. Note that the representation does not include the weights, only the architecture. You can reinstantiate the same model (with reinitialized weights) from the JSON string via:
+
+#CODE CHUNK
+from keras.models import model_from_json
+
+json_string = model.to_json()
+model = model_from_json(json_string)
+#
+
+    model.to_yaml() returns a representation of the model as a YAML string. Note that the representation does not include the weights, only the architecture. You can reinstantiate the same model (with reinitialized weights) from the YAML string via:
+
+#CODE CHUNK
+from keras.models import model_from_yaml
+
+yaml_string = model.to_yaml()
+model = model_from_yaml(yaml_string)
+#
+
+    model.save_weights(filepath) saves the weights of the model as a HDF5 file.
+    model.load_weights(filepath, by_name=False) loads the weights of the model from a HDF5 file (created by save_weights). By default, the architecture is expected to be unchanged. To load weights into a different architecture (with some layers in common), use by_name=True to load only those layers with the same name.
+
+
+
+
+
+
+Sequential Models
+=================
+
+
+
+
+
+
+
+
+###Bigger Picture###
+
+Types of Neural Networks
+========================
+
+Recurrent NN
+Bidirectional Recurrent NN
+Gated RNN
+Deep Recurrent N
+Recursive NN
+Convolutional NN
+Deep NN
+
+
+
+
+
+###Learn2Code###
+
+PIP = package maintenance system for Python
+	download = get-pip.py
