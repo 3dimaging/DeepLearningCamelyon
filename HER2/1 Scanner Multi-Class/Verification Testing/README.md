@@ -33,3 +33,4 @@ Table 1: Accuracy per fold with Truth and altered Truth Validation Testing
 
 
 
+LaTex for delta symbol not working :-1: 
