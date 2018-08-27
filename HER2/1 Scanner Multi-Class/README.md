@@ -1,17 +1,26 @@
 # This is the First pass at the HER2 Multi-class single scanner test
 
+Each test runs 5-fold (no holdout) for data from only one scanner (single subset) 
+
+Next: 
+1. Print scores for every image. 
+2. Move into multi-scanner.
+
+
+
+
+
+
+
+
+
+
+
 
 Need to evaluate:
-1. Why is accuracy 1 for every fold for every scanner?
-2. Why does each epoch run to 241? Shouldn't it run to 193? (4/5 of 241)
-3. When we change around some of the darker images from folder 3 to folder 1, does that effect predictability? It should bring accuracy down - does it?
-4. Is there a way to predict accuracy with greater than 2 significant figures? This could also be our problem.
-
-
-
-There is surely something wrong here. We will conduct testing and training to evaluate the issue.
-
-
-
+1. Is there a way to predict accuracy with greater than 2 significant figures?
+2. "pred" object used to produce [0,1,2], now produce [1,2] - why??
+3. Should we run this with a holdout set? If yes, is the holdout set different for each subset(scanner)?
+4. Should I save model weights? Is there any reason I will need to use an identical system later?
 
 
