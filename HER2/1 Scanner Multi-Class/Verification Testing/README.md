@@ -9,6 +9,8 @@ Testing listed as follows:
     - **Results:** ~5% drop in accuracy per fold
 3. Hamamatsu_2 -> 10 images label 3 -> label 1
     - **Results:** ~10% drop in accuracy per fold
+    
+**Conclusion:** System running properly
 
 Table 1: Accuracy per fold with Truth and altered Truth Validation Testing
 
