@@ -1,3 +1,4 @@
+# Testing Outline
 1. No augmentations:
    1. Training/testing 50/50 split, all from Scanner 1 > Output=accuracy compared to mean score
    2. Training/testing 50/50 split, all from Scanner 2 > Output=accuracy compared to mean score
