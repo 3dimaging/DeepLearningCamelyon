@@ -13,7 +13,7 @@ Testing listed as follows:
 Table 1: Accuracy per fold with Truth and altered Truth Validation Testing
 
 
-|Scanner|True|Epoch|Val_test|Epoch|\delta Acc.|Avg. \delta Acc.|Description|
+|Scanner|True|Epoch|Val_test|Epoch|\(Delta) Acc.|Avg. \D Acc.|Description|
 |-------|----|-----|--------|-----|-----------|----------------| :-------: |
 |FDA|0.7551|112|0.7755|63|+0.0204|+0.00824|10 images label 1 -> label 3|
 | |0.7083|93|0.75|72|+0.0417|~ +0.08%||
