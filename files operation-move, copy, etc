@@ -1,0 +1,53 @@
+import numpy as np
+from PIL import Image
+import os.path as osp
+import openslide
+from pathlib import Path
+from scipy.misc import imsave as saveim
+import glob
+from pandas import HDFStore
+from openslide.deepzoom import DeepZoomGenerator
+import cv2 as cv2
+from skimage import io
+import xml.etree.ElementTree as et
+import pandas as pd
+import math
+import os
+import shutil
+
+#validation_slide_path_normal = '/home/wli/Downloads/CAMELYON16/training/normal/validation'
+
+#validation_slide_paths = glob.glob(osp.join(validation_slide_path_normal, '*.tif'))
+
+#np.save('validation_normal.npy', validation_slide_paths)
+
+validation_slide_paths = np.load('validation_normal.npy')
+print(validation_slide_paths)
+
+#validation_slide_path = '/home/wzli/Downloads/CAMELYON16/training/normal'
+
+novalidation_path = '/home/wzli/Downloads/test/normal'
+
+novalidation_path_mask = '/home/wzli/Downloads/test/nmask'
+
+novalidation_paths =  glob.glob(osp.join(novalidation_path, '*.png'))
+
+#slide_contains_tumor = osp.basename(slide_paths_total[i]).startswith('normal_')
+
+#truth_slide_path = base_truth_dir / osp.basename(slide_paths_total[i]).replace('.tif', '_mask.tif')
+
+dest1 = '/home/wzli/Downloads/test/validation/normal'
+
+dest2 = '/home/wzli/Downloads/test/validation/nmask'
+
+i=0
+
+while i < len(validation_slide_paths):
+
+    for f in novalidation_paths:
+        if osp.basename(f).startswith(osp.splitext(osp.basename(validation_slide_paths[i]))[0]):
+            shutil.move(f, dest1)
+            m = osp.join(novalidation_path_mask, osp.basename(f).replace('.png', '_mask.png'))
+            shutil.move(m, dest2)
+
+    i=i+1
