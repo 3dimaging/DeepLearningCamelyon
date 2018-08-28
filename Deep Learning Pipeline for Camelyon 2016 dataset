@@ -39,7 +39,7 @@ Tumor slide : 1K positive and 1K negative from each slide
 	    adding color noise
 	    flip
 
-6. Image Preparation
+-- Image Preparation
 
 --Image normalization
 	Images show variety of brightness and colors.
