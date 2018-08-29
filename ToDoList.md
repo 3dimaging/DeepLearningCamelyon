@@ -4,3 +4,4 @@
 # 08-29-18 color noise
            I think I figured out color noise. 
            Also, the sequence of augmentation is important. For example, add color noise first and do flip second. The pattern of noise will be the same. do flip first, noise second. the image with different flips will have different noise pattern.
+           Now, the code is ready, but after saving the patches with color noise, the color noise disappered after reopen.
