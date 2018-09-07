@@ -5,7 +5,7 @@
 **Solution:** 1. Ensure at least 20 of 21 total '0' class images are in train set
               2. Augment '0' label data to bolster quantity to match other labels (fix data inequality problem)
 ## Results:
-|->|->|->|->|LOO OG Data|->|->|->|->|LOO Augmented '0' label|
+|*LOO OG Data*|||||*LOO Augmented '0' label*|||||
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 ||**0**|**1**|**2**|**Tot**||**0**|**1**|**2**|**Tot**|
 |**0**|2|19|-|21|**0**|64|21|-|85|
