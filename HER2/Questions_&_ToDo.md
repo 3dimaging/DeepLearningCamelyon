@@ -6,12 +6,14 @@
             vert & horiz flip TRUE
             shearing =< 20% TRUE
    I'm not understanding how to change augmentations. I think you mean different parts of aug so table looks something like below- yes?:
+   
    |Test|Aug v.1|Aug v.2|Aug v.3|Aug v.4|Aug v.5|Aug v.6|
    |--|--|--|--|--|--|--|
    |i|||||||
    |ii|||||||
    |...|||||||
    |viii||||||||
+   
    Latest instructions: "Great, so since augmentations helped, I think we should make a table with the results as a number of the number of augmentations.  Let’s keep the same differences between the 1+, 2+, 3+ but explore more this effect of the augmentations.  Maybe a couple more angles of rotation, different flip?"
 3. 
 
