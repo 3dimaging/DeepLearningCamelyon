@@ -15,7 +15,7 @@
    |viii||||||||
    
    Latest instructions: "Great, so since augmentations helped, I think we should make a table with the results as a number of the number of augmentations.  Let’s keep the same differences between the 1+, 2+, 3+ but explore more this effect of the augmentations.  Maybe a couple more angles of rotation, different flip?"
-3. 
+3. Need to insert data augmentation into the k-fold.... figure this out. 'flow from directory' will NOT work here... will need to find a new function. no 'save to' command, unless I need to save it to a temporary directory....
 
 # To Do
 1. HER2 Testing Progress:
