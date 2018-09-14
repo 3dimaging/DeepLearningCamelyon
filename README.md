@@ -1,6 +1,7 @@
 # Deep Learning Pipeline for Camelyon 2016 dataset
 
     Weizhe Li, Weijie Chen
+    
 
 
 ## 1. Set up deep learning environment.
@@ -96,3 +97,11 @@ Extract additional training patches from false positive regions
 Training again (model-2)
 
 Combine Model-1 and Model-2
+
+# References
+## 1. Wang, D., et al.: Deep learning for identifying metastatic breast cancer
+https://arxiv.org/abs/1606.05718
+
+## 2. Diagnostic Assessment of Deep Learning Algorithms for Detection of Lymph Node Metastases in Women With Breast Cancer.
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5820737/?report=reader#!po=59.4340
+
