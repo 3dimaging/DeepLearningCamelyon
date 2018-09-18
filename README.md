@@ -83,6 +83,23 @@ Put all the patches together and get prediction for the whole slide.
 
 Feature extraction: area of tumor, number of tumor regions, diameter of tumor region, etc. 
 random forest vs Support Vector Machine (svm)
+### features for whole-slide image classification task
+#### global features
+1. The ratio between the area of metastatic regions and the tissue area.
+2. The sum of all cancer metastases probailities detected in the metastasis identification task, divided by the tissue area. 
+caculate them at 5 different thresholds (0.5, 0.6, 0.7, 0.8, 0.9), so the total 10 global features
+#### local features
+Based on 2 largest metastatic candidate regions (select them based on a threshold of 0.5).
+9 features were extracted from the 2 largest regions:
+
+1. Area: the area of connected region
+2. Eccentricity: The eccentricity of the ellipse that has the same second-moments as the region
+3. Extend: The ratio of region area over the total bounding box area
+4. Bounding box area
+5. Major axis length: the length of the major axis of the ellipse that has the same normalized second central moments as the region
+6. Max/mean/min intensity: The max/mean/minimum probability value in the region
+7. Aspect ratio of the bounding box
+8. Solidity: Ratio of region area over the surrounding convex area
 
 ## 9. find the tumor region
    	 
