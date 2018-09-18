@@ -98,6 +98,9 @@ Training again (model-2)
 
 Combine Model-1 and Model-2
 
+# Teams using GoogleNet
+HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
+
 # References
 ## 1. Wang, D., et al.: Deep learning for identifying metastatic breast cancer
 https://arxiv.org/abs/1606.05718
