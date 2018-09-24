@@ -1,0 +1,14 @@
+This is for color normalization
+Please see the link here:
+https://github.com/Peter554/StainTools
+
+To install the package, please first install another package: http://spams-devel.gforge.inria.fr/
+
+1. download the source file: 
+   http://spams-devel.gforge.inria.fr/hitcounter2.php?file=file/37237/spams-python-v2.6.1-2017-12-08.tar.gz
+
+2. after unzip it, go to the unzipped folder and install it by:
+python setup.py install --prefix=~/your-python-environment
+
+3. after install spams, install stain tools (in python environment) by:
+pip3 install staintools
