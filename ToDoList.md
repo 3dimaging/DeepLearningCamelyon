@@ -44,5 +44,17 @@
            
            After meeting with Dr. chen and Kenny, the learning rate is set to reduced by half every epoch.
            
+ # 09-17-18 googlenet training (continue)
+           the validation score for this model is 92%.
+           I did another round of training using the weight of this model. It is improved to 93%.
+           
+ # 09-18-18 feature extraction
+           I worked on the code to extract features for random forest
+           
+ # 09-19-18 heatmap generation
+           I worked on the code to genetrate heatmap for training dataset. 
+           
+           We also found that for method I, HMS&MIT group use learning rate of 0.01, 0.001, 0.0001, 0.00001, trained the model by using this learning rate.
+           
            
            
