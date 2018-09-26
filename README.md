@@ -88,28 +88,29 @@ Normal slide: 1K negative from each slide
 
 ### GoogleNet
 
-- step 1: Model Training
+-- step 1: Model Training
+
 [training googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20googelnet)
 
--- Optimization method: Stochastic gradient descent
+- Optimization method: Stochastic gradient descent
 
--- Weight initialization: Random sampling from a Gaussian distribution
+- Weight initialization: Random sampling from a Gaussian distribution
 
--- Batch size: 32
+- Batch size: 32
 
--- Batch normalization: No
+- Batch normalization: No
 
--- Regularization: L2-regularization (0.0005) and 50% dropout
+- Regularization: L2-regularization (0.0005) and 50% dropout
 
--- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations (0.01, multiplied by 0.1 per epoch)
+- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations (0.01, multiplied by 0.1 per epoch)
 
--- Activation function: ReLu
+- Activation function: ReLu
 
--- Loss function: Cross-entropy
+- Loss function: Cross-entropy
 
--- Number of training epochs/iterations: 300,000 iterations
+- Number of training epochs/iterations: 300,000 iterations
 
-- step 2: Negative Mining
+-- step 2: Negative Mining
 
 
 Extract additional training patches from false positive regions
