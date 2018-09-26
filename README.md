@@ -34,6 +34,8 @@ Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe
 
 - [Annotation Visulization Over Image Base on xml file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20image_Based%20on%20xml%20file)
 
+- [Annotation Visulization Over Image Base on mask file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20Image-Based%20on%20Mask%20file)
+
 
 ## 2- Image Preprocess
 
@@ -88,13 +90,21 @@ Normal slide: 1K negative from each slide
 training googlenet
 
 -- Optimization method: Stochastic gradient descent
+
 -- Weight initialization: Random sampling from a Gaussian distribution
+
 -- Batch size: 32
--- Batch normalization15: No
--- Regularization: L2-regularization (0.0005) and 50% dropout16
+
+-- Batch normalization: No
+
+-- Regularization: L2-regularization (0.0005) and 50% dropout
+
 -- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations
+
 -- Activation function: ReLu
+
 -- Loss function: Cross-entropy
+
 -- Number of training epochs/iterations: 300,000 iterations
 
 - step 2: Negative Mining
