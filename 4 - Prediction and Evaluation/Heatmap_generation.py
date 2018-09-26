@@ -22,10 +22,10 @@ for i in range(len(pred_dim_paths)):
         heatmap_final = heatmap_new.reshape(pred_dim[7], pred_dim[8])
         
         
-heatmap_final_final = np.zeros((pred_dim[0], pred_dim[1]), heatmap_final.dtype)
+    heatmap_final_final = np.zeros((pred_dim[0], pred_dim[1]), heatmap_final.dtype)
 
-heatmap_final_final[:]=0.2722071
+    heatmap_final_final[:]=0.2722071
 
-heatmap_final_final[pred_dim[5]-1:pred_dim[6], pred_dim[3]-1:pred_dim[4]] = heatmap_final
+    heatmap_final_final[pred_dim[5]-1:pred_dim[6], pred_dim[3]-1:pred_dim[4]] = heatmap_final
 
-np.save('/home/wli/Downloads/pred/realheatmap/%s' % (osp.splitext(osp.basename(pred_dim_paths[i]))[0]), heatmap_final_final)
+    np.save('/home/wli/Downloads/pred/realheatmap/%s' % (osp.splitext(osp.basename(pred_dim_paths[i]))[0]), heatmap_final_final)
