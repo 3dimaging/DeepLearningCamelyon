@@ -123,17 +123,21 @@ Heatmap is a way to display the probability
 Put all the patches together and get prediction for the whole slide. 
 
     
-###   and classification
+### Slide-based Classification
 
-Feature extraction: area of tumor, number of tumor regions, diameter of tumor region, etc. 
-random forest vs Support Vector Machine (svm)
-### features for whole-slide image classification task
+
+features for whole-slide image classification task
+
 #### global features
+
 1. The ratio between the area of metastatic regions and the tissue area.
 2. The sum of all cancer metastases probailities detected in the metastasis identification task, divided by the tissue area. 
 caculate them at 5 different thresholds (0.5, 0.6, 0.7, 0.8, 0.9), so the total 10 global features
+
 #### local features
+
 Based on 2 largest metastatic candidate regions (select them based on a threshold of 0.5).
+
 9 features were extracted from the 2 largest regions:
 
 1. Area: the area of connected region
@@ -145,15 +149,16 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 7. Aspect ratio of the bounding box
 8. Solidity: Ratio of region area over the surrounding convex area
 
-### 9. tumor position detection
+### Lesion-based Detection
    	 
-- Extract Patches 
+- Extract Patches near Tumor Regions
 
-- Training again (model-2)
+- Training model again (model-2)
 
 - Combine Model-1 and Model-2, do prediction
 
 
+### ROC and FROC Generation
 
 # Teams using GoogleNet
 HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
