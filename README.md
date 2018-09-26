@@ -90,7 +90,7 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 -- step 1: Model Training
 
-[training googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20googelnet)
+[Training GoogleNet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20googelnet)
 
 - Optimization method: Stochastic gradient descent
 
