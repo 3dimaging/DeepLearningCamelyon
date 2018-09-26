@@ -37,7 +37,7 @@ Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe
 - [Annotation Visulization Over Image Base on mask file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20Image-Based%20on%20Mask%20file)
 
 
-## 2- Image Preprocess
+## 2 - Image Preprocess
 
 ### Image Segmentation
 
@@ -115,7 +115,7 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 Extract additional training patches from false positive regions
 
-## 4. Prediction and Evaluation
+## 4 - Prediction and Evaluation
 ###  Make predictions and construct heatmaps
 
 Test images were divided into non-overlapping small patches; each patch will get a predicted image for each pixel assigned by probability.
