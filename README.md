@@ -18,7 +18,7 @@
 
 - [ASAP Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/ASAP%20installation%20(Ubuntu%2016.04))
 - [OpenSlide Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/OpenSlide%20Installation)
-- Compare the ASAP and OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
+Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
    
 ### Mask file generation
 
