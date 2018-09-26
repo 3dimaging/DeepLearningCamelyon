@@ -52,9 +52,9 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 - Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
                
-Tumor slide : 1K positive and 1K negative from each slide
+		Tumor slide : 1K positive and 1K negative from each slide
 
-Normal slide: 1K negative from each slide
+		Normal slide: 1K negative from each slide
             
 
 - Step 2 : Crop 224x224 patches and conduct image augmentation
