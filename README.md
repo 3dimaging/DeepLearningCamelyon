@@ -64,7 +64,7 @@ Normal slide: 1K negative from each slide
 	    color normalization (Method II)
 
 		
-- Image Generator
+- Step 3 : Image Generator
 
 ## 3 - Training Neural Network
 	
