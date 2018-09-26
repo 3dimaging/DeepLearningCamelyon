@@ -18,6 +18,8 @@
 
 - [ASAP Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/ASAP%20installation%20(Ubuntu%2016.04))
 - [OpenSlide Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/OpenSlide%20Installation)
+
+
 Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
    
 ### Mask file generation
@@ -35,37 +37,36 @@ Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe
 
 ## 2- Image Preprocess
 
- 	-- To reduce computation, the blank regions (no tissue) on slide will be excluded. 
-  		Tissue region segmentation (Otsu’s method of foreground segmentation)
+### Image Segmentation
 
--- tumor regions and normal regions are distinguished by mask file
+To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
-### patch extraction
+- Color space switch to HSV
+- Tissue region segmentation (Otsu’s method of foreground segmentation)
 
 
--- Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
+### Patch Extraction
+
+
+- Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
                
 Tumor slide : 1K positive and 1K negative from each slide
-            	Normal slide: 1K negative from each slide
-            Threshold setup based on greyscale file;
-	    Threshold setup based on HSV color space;
 
--- Step 2 : Crop 224x224 patches and conduct image augmentation
-            color normalization
-	    adding color noise
+Normal slide: 1K negative from each slide
+            
+
+- Step 2 : Crop 224x224 patches and conduct image augmentation
+
+	    adding color noise (Method II)
 	    flip
+	    color normalization (Method II)
 
--- Image Preparation
-
---Image normalization
-	Images show variety of brightness and colors.
---Color space switch to HSV
 		
-Make image formatted according to tensorflow
+- Image Generator
 
 ## 3 - Training Neural Network
 	
-	FCN:
+###	FCN
 
 	Lambda, Normalize input (x / 255.0 - 0.5), outputs 256x256x3 
 0. Convolution1, 5 x 5 kernel, stride 2, outputs 128x128x100 
@@ -79,16 +80,25 @@ Make image formatted according to tensorflow
 8. Deconvolution, 31 x 31 kernel, stride 16, outputs 256x256x2 
 
 
-Tuning parameters: activation method, padding, strides, optimizer
+### U-net
 
-Feed neural network 
+### GoogleNet
 
-Save the model for prediction
+- step 1: Model Training
+training googlenet
 
-- GoogleNet
-- increase the accurary
+-- Optimization method: Stochastic gradient descent
+-- Weight initialization: Random sampling from a Gaussian distribution
+-- Batch size: 32
+-- Batch normalization15: No
+-- Regularization: L2-regularization (0.0005) and 50% dropout16
+-- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations
+-- Activation function: ReLu
+-- Loss function: Cross-entropy
+-- Number of training epochs/iterations: 300,000 iterations
 
-If the false positive is high:
+- step 2: Negative Mining
+
 
 Extract additional training patches from false positive regions
 
