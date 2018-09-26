@@ -6,9 +6,11 @@
 ## 0 - Preparation
 ### Set up deep learning environment.
 
-        – Setup Python Environment
-        – Install CUDA
-        – Install tensorflow
+– [Setup Python Environment](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Seup%20Machine%20Learning%20Environment.py)
+- [Python IDE](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Python%20IDE%20(Emacs%20%2B%20Org%20%2B%20Ob-iPython))
+- [Package Installation for Color Normalization](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Staintools)
+- [Singularity for reproducibility](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Singularity)
+        
 
 
 ### ASAP installation and image display
