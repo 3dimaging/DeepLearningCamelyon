@@ -80,14 +80,16 @@ Normal slide: 1K negative from each slide
 6. Dropout, 0.1 rate 
 7. Convolution5, 1x1 kernel, stride 1, outputs 16x16x2 
 8. Deconvolution, 31 x 31 kernel, stride 16, outputs 256x256x2 
-
+-[FCN training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 
 ### U-net
+- [U-net training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20unet)
+
 
 ### GoogleNet
 
 - step 1: Model Training
-training googlenet
+[training googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20googelnet)
 
 -- Optimization method: Stochastic gradient descent
 
@@ -99,7 +101,7 @@ training googlenet
 
 -- Regularization: L2-regularization (0.0005) and 50% dropout
 
--- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations
+-- Learning rate: 0.01, multiplied by 0.5 every 50,000 iterations (0.01, multiplied by 0.1 per epoch)
 
 -- Activation function: ReLu
 
