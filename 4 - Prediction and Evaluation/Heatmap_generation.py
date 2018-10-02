@@ -13,7 +13,7 @@ for i in range(len(pred_dim_paths)):
     pred_dim = np.load(pred_dim_paths[i])
     pred_heatmap = np.load(pred_rawheatmap_paths[i])
     
-    if pred_dim[7]*pred_dim[8] == len(pred_heatmap):
+    if pred_dim[7]*pred_dim[8] == len(pred_heatmap)*32:
         heatmap_final = pred_heatmap.reshape(pred_dim[7], pred_dim[8])
         
     else:
