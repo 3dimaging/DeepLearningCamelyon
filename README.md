@@ -167,16 +167,16 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 
 ### ROC and FROC Generation
 
-#### - [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
-#### - [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
+ - [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
+ - [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
 
 # Teams using GoogleNet
 HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
 
 # References
-## 1. Wang, D., et al.: Deep learning for identifying metastatic breast cancer
+- 1. Wang, D., et al.: Deep learning for identifying metastatic breast cancer
 https://arxiv.org/abs/1606.05718
 
-## 2. Diagnostic Assessment of Deep Learning Algorithms for Detection of Lymph Node Metastases in Women With Breast Cancer.
+- 2. Diagnostic Assessment of Deep Learning Algorithms for Detection of Lymph Node Metastases in Women With Breast Cancer.
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5820737/?report=reader#!po=59.4340
 
