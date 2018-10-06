@@ -143,6 +143,10 @@ Heatmap for tumor_026:
 The overview of heatmap for tumor_026:
 
 ![alt text](https://github.com/3dimaging/Accessory/blob/master/9926DPY.png)
+
+Comparison of predicted with ground truth for tumor_005:
+
+![alt text](https://github.com/3dimaging/Accessory/blob/master/49285XZv.png)
     
 ### 4.2a Slide-based Classification
 
