@@ -130,7 +130,7 @@ Put all the patches together and get prediction for the whole slide ([code for h
 #### Results
 Heatmap for tumor_026:
 
-[alt text](https://github.com/3dimaging/Accessory/blob/master/9926p6L.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/9926p6L.png)
     
 ### 4.2a Slide-based Classification
 
