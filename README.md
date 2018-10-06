@@ -116,25 +116,30 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 Extract additional training patches from false positive regions
 
 ## 4 - Prediction and Evaluation
-###  Make predictions and construct heatmaps
+### Step 1 : Make predictions and construct heatmaps
 
 Test images were divided into non-overlapping small patches; each patch will get a predicted image for each pixel assigned by probability.
-Heatmap is a way to display the probability
-Put all the patches together and get prediction for the whole slide. 
+Heatmap is a way to display the probability 
+
+#### [code for prediction - googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_googlenet.py)
+#### [code for prediction - FCN and U-net](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_fcn_unet.py)
+
+
+Put all the patches together and get prediction for the whole slide ([code for heatmap generation based on predicted values](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Heatmap_generation.py)). 
 
     
-### Slide-based Classification
+### Step 2a : Slide-based Classification
 
 
-features for whole-slide image classification task
+Extracting Features for whole-slide image classification task
 
-#### global features
+#### Global Features Extraction
 
 1. The ratio between the area of metastatic regions and the tissue area.
 2. The sum of all cancer metastases probailities detected in the metastasis identification task, divided by the tissue area. 
 caculate them at 5 different thresholds (0.5, 0.6, 0.7, 0.8, 0.9), so the total 10 global features
 
-#### local features
+#### Local Features Extraction 
 
 Based on 2 largest metastatic candidate regions (select them based on a threshold of 0.5).
 
@@ -149,9 +154,11 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 7. Aspect ratio of the bounding box
 8. Solidity: Ratio of region area over the surrounding convex area
 
-### Lesion-based Detection
+#### [code for Global and Local Features Extraction](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Feature_extraction_for_random_forest.py)
+
+### Step 2b : Lesion-based Detection
    	 
-- Extract Patches near Tumor Regions
+- [Extract Patches near Tumor Regions](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Patches_Near_Tumor.py)
 
 - Training model again (model-2)
 
@@ -159,6 +166,9 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 
 
 ### ROC and FROC Generation
+
+#### [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
+#### [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
 
 # Teams using GoogleNet
 HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
