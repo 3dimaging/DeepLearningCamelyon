@@ -127,6 +127,10 @@ Heatmap is a way to display the probability
 
 Put all the patches together and get prediction for the whole slide ([code for heatmap generation based on predicted values](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Heatmap_generation.py)). 
 
+#### Results
+Heatmap for tumor_026:
+
+[alt text](https://github.com/3dimaging/Accessory/blob/master/9926p6L.png)
     
 ### 4.2a Slide-based Classification
 
