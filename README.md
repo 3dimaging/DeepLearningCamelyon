@@ -4,7 +4,7 @@
     
 
 ## 0 - Preparation
-### Set up deep learning environment.
+### - Set up deep learning environment.
 
 - [Setup Python Environment](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Seup%20Machine%20Learning%20Environment.py)
 
@@ -14,7 +14,7 @@
         
 
 
-### ASAP installation and image display
+### - ASAP installation and image display
 
 - [ASAP Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/ASAP%20installation%20(Ubuntu%2016.04))
 - [OpenSlide Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/OpenSlide%20Installation)
@@ -22,7 +22,7 @@
 
 Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
    
-### Mask file generation
+### - Mask file generation
 
 - Mask file is the ground truth for model training. Mask file has the exact same dimensions as its corresponding WSI image.  Mask file is a binary file with normal tissue coded as ‘0’ and tumor tissue coded as ‘1’ for each corresponding pixel of WSI image. 
 - [Mask file generation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Mask%20Generation)
@@ -167,8 +167,8 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 
 ### ROC and FROC Generation
 
-#### [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
-#### [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
+#### - [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
+#### - [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
 
 # Teams using GoogleNet
 HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
