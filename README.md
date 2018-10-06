@@ -31,9 +31,9 @@ Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe
 
 WSI and Mask file: tumor_026
 
-![alt text](https://github.com/3dimaging/Accessory/blob/master/67692xMg.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/389e2c0cd56cf3ea1356fd03a2af35cc-94048Vj0.png)
 
-WSI and Mask file: tumor_001
+WSI and Mask file: tumor_005
 
 ![alt tex](https://github.com/3dimaging/Accessory/blob/master/49285w6c.png)
 
