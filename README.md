@@ -44,11 +44,14 @@ WSI and Mask file: tumor_005
 
 - [Annotation Visulization Over Image Base on xml file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20image_Based%20on%20xml%20file)
 
- ![alt text](https://github.com/3dimaging/Accessory/blob/master/annotation%20over%20wsi.png =250x)
+ 
+ <img src="https://github.com/3dimaging/Accessory/blob/master/annotation%20over%20wsi.png" width="250">
 
 - [Annotation Visulization Over Image Base on mask file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20Image-Based%20on%20Mask%20file)
 
- ![alt text](https://github.com/3dimaging/Accessory/blob/master/annotation2.png =250x)
+ 
+ <img src="https://github.com/3dimaging/Accessory/blob/master/annotation2.png" width="250">
+
 
 
 ## 2 - Image Preprocess
