@@ -4,7 +4,7 @@
     
 
 ## 0 - Preparation
-### a. Set up deep learning environment.
+### 0.1 Set up deep learning environment.
 
 - [Setup Python Environment](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/Seup%20Machine%20Learning%20Environment.py)
 
@@ -14,7 +14,7 @@
         
 
 
-### b. ASAP installation and image display
+### 0.2 ASAP installation and image display
 
 - [ASAP Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/ASAP%20installation%20(Ubuntu%2016.04))
 - [OpenSlide Installation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/0%20-%20Preparation/OpenSlide%20Installation)
@@ -22,7 +22,7 @@
 
 Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe its commands; OpenSlide has a much better document for its commands. ASAP has a GUI; OpenSlide doesn’t   
    
-### c. Mask file generation
+### 0.3 Mask file generation
 
 - Mask file is the ground truth for model training. Mask file has the exact same dimensions as its corresponding WSI image.  Mask file is a binary file with normal tissue coded as ‘0’ and tumor tissue coded as ‘1’ for each corresponding pixel of WSI image. 
 - [Mask file generation](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Mask%20Generation)
@@ -39,7 +39,7 @@ Compare the ASAP with OpenSlide: ASAP doesn’t have detailed manual to describe
 
 ## 2 - Image Preprocess
 
-### Image Segmentation
+### 2.1 Image Segmentation
 
 To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
@@ -47,7 +47,7 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 - Tissue region segmentation (Otsu’s method of foreground segmentation)
 
 
-### Patch Extraction
+### 2.2 Patch Extraction
 
 
 - Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
@@ -68,7 +68,7 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 ## 3 - Training Neural Network
 	
-###	FCN
+### 3.1	FCN
 
 	Lambda, Normalize input (x / 255.0 - 0.5), outputs 256x256x3 
 0. Convolution1, 5 x 5 kernel, stride 2, outputs 128x128x100 
@@ -82,11 +82,11 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 8. Deconvolution, 31 x 31 kernel, stride 16, outputs 256x256x2 
 -[FCN training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 
-### U-net
+### 3.2 U-net
 - [U-net training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20unet)
 
 
-### GoogleNet
+### 3.3 GoogleNet
 
 -- step 1: Model Training
 
@@ -116,7 +116,7 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 Extract additional training patches from false positive regions
 
 ## 4 - Prediction and Evaluation
-### Step 1 : Make predictions and construct heatmaps
+### 4.1 Make predictions and construct heatmaps
 
 Test images were divided into non-overlapping small patches; each patch will get a predicted image for each pixel assigned by probability.
 Heatmap is a way to display the probability 
@@ -128,7 +128,7 @@ Heatmap is a way to display the probability
 Put all the patches together and get prediction for the whole slide ([code for heatmap generation based on predicted values](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Heatmap_generation.py)). 
 
     
-### Step 2a : Slide-based Classification
+### 4.2a Slide-based Classification
 
 
 Extracting Features for whole-slide image classification task
@@ -156,7 +156,7 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 
 #### [code for Global and Local Features Extraction](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Feature_extraction_for_random_forest.py)
 
-### Step 2b : Lesion-based Detection
+### 4.2b Lesion-based Detection
    	 
 - [Extract Patches near Tumor Regions](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Patches_Near_Tumor.py)
 
@@ -165,7 +165,7 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 - Combine Model-1 and Model-2, do prediction
 
 
-### ROC and FROC Generation
+### 4.3 ROC and FROC Generation
 
  - [Code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
  - [Code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
