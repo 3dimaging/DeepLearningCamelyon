@@ -121,8 +121,8 @@ Extract additional training patches from false positive regions
 Test images were divided into non-overlapping small patches; each patch will get a predicted image for each pixel assigned by probability.
 Heatmap is a way to display the probability 
 
-#### [code for prediction - googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_googlenet.py)
-#### [code for prediction - FCN and U-net](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_fcn_unet.py)
+ - [Code for prediction - googlenet](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_googlenet.py)
+ - [Code for prediction - FCN and U-net](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Prediction_fcn_unet.py)
 
 
 Put all the patches together and get prediction for the whole slide ([code for heatmap generation based on predicted values](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Heatmap_generation.py)). 
@@ -167,16 +167,16 @@ Based on 2 largest metastatic candidate regions (select them based on a threshol
 
 ### ROC and FROC Generation
 
- - [code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
- - [code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
+ - [Code for ROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/Random_Forest_Training_and_ROC.py)
+ - [Code for FROC](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/4%20-%20Prediction%20and%20Evaluation/Evaluation/FROC_from_organizer.py)
 
 # Teams using GoogleNet
 HMS&MIT, HMS&MGH(model I), Smart Imaging(model II), Osaka University, CAMP-TUM(model II), Minsk Team, DeepCare
 
 # References
-- 1. Wang, D., et al.: Deep learning for identifying metastatic breast cancer
+-  Wang, D., et al.: Deep learning for identifying metastatic breast cancer
 https://arxiv.org/abs/1606.05718
 
-- 2. Diagnostic Assessment of Deep Learning Algorithms for Detection of Lymph Node Metastases in Women With Breast Cancer.
+-  Diagnostic Assessment of Deep Learning Algorithms for Detection of Lymph Node Metastases in Women With Breast Cancer.
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5820737/?report=reader#!po=59.4340
 
