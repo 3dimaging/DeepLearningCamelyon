@@ -44,7 +44,11 @@ WSI and Mask file: tumor_005
 
 - [Annotation Visulization Over Image Base on xml file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20image_Based%20on%20xml%20file)
 
+ ![alt text](https://github.com/3dimaging/Accessory/blob/master/annotation%20over%20wsi.png)
+
 - [Annotation Visulization Over Image Base on mask file](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/1%20-%20WSI%20Visualization%20with%20Annotation/Display%20annotation%20over%20Image-Based%20on%20Mask%20file)
+
+ ![alt text](https://github.com/3dimaging/Accessory/blob/master/annotation2.png)
 
 
 ## 2 - Image Preprocess
@@ -76,6 +80,12 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 		
 - Step 3 : Image Generator
 
+ Patches:
+ ![alt text](https://github.com/3dimaging/Accessory/blob/master/patches.png)
+ 
+ Ground Truth:
+ ![alt text](https://github.com/3dimaging/Accessory/blob/master/patche%20ground%20truth.png)
+
 ## 3 - Training Neural Network
 	
 ### 3.1	FCN
@@ -94,6 +104,9 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 ### 3.2 U-net
 - [U-net training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20unet)
+
+Prediction by trained U-net:
+![alt text](https://github.com/3dimaging/Accessory/blob/master/u-net%20prediction.png)
 
 
 ### 3.3 GoogleNet
