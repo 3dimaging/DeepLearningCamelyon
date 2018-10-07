@@ -67,21 +67,32 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 ### 2.2 Patch Extraction
 
 
-- Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
+#### Step 1 : Randomly extract patches (256 x 256) on the tissue region at the level of 40x
                
 		Tumor slide : 1K positive and 1K negative from each slide
 
 		Normal slide: 1K negative from each slide
             
 
-- Step 2 : Crop 224x224 patches and conduct image augmentation
+#### Step 2 : Crop 224x224 patches and conduct image augmentation
 
-	    adding color noise (Method II)
-	    flip
-	    color normalization (Method II)
+	   - stain normalization (Method II)
+	   
+	   The color variety among patches
+	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/color%20variety.png)
+	   The patches before and after stain normalization
+	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png)
+	   
+	   - flip
+	   - adding color noise (Method II)
+	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png)
+	   
+	   
+	    
+	    
 
 		
-- Step 3 : Image Generator
+#### Step 3 : Image Generator
 
  Patches:
  ![alt text](https://github.com/3dimaging/Accessory/blob/master/patches.png)
@@ -105,8 +116,15 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 8. Deconvolution, 31 x 31 kernel, stride 16, outputs 256x256x2 
 -[FCN training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 
+FCN prediction
+![alt text](https://github.com/3dimaging/Accessory/blob/master/fcn-predicion%20tumor.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/fcn-prediction%202.png)
+
 ### 3.2 U-net
 - [U-net training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20unet)
+
+Learning Curve
+![alt text](https://github.com/3dimaging/Accessory/blob/master/u-net%20training%20score.png)
 
 Prediction by trained U-net:
 ![alt text](https://github.com/3dimaging/Accessory/blob/master/u-net%20prediction.png)
