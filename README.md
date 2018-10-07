@@ -76,20 +76,20 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 #### Step 2 : Crop 224x224 patches and conduct image augmentation
 
-	   - stain normalization (Method II)
+- stain normalization (Method II)
 	   
-	   The color variety among patches
+The color variety among patches
 	   
-	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/color%20variety.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/color%20variety.png)
 	   
-	   The patches before and after stain normalization
+The patches before and after stain normalization
 	   
-	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png)
 	   
-	   - flip
-	   - adding color noise (Method II)
+- flip
+- adding color noise (Method II)
 	   
-	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png)
+![alt text](https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png)
 	   
 	   
 	    
@@ -121,8 +121,9 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 -[FCN training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 
 FCN prediction
-![alt text](https://github.com/3dimaging/Accessory/blob/master/fcn-predicion%20tumor.png)
-![alt text](https://github.com/3dimaging/Accessory/blob/master/fcn-prediction%202.png)
+<img src="https://github.com/3dimaging/Accessory/blob/master/fcn-predicion%20tumor.png" width="250">
+
+<img src="https://github.com/3dimaging/Accessory/blob/master/fcn-prediction%202.png" width="250">
 
 ### 3.2 U-net
 - [U-net training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20for%20unet)
