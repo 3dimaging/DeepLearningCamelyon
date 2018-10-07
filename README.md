@@ -79,12 +79,16 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 	   - stain normalization (Method II)
 	   
 	   The color variety among patches
+	   
 	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/color%20variety.png)
+	   
 	   The patches before and after stain normalization
+	   
 	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png)
 	   
 	   - flip
 	   - adding color noise (Method II)
+	   
 	   ![alt text](https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png)
 	   
 	   
