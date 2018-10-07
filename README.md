@@ -78,18 +78,21 @@ To reduce computation, the blank regions (no tissue) on slide will be excluded.
 
 - stain normalization (Method II)
 	   
-The color variety among patches
+  The color variety among patches
 	   
-![alt text](https://github.com/3dimaging/Accessory/blob/master/color%20variety.png)
+ <img src="https://github.com/3dimaging/Accessory/blob/master/color%20variety.png" width="350">
+
 	   
-The patches before and after stain normalization
+  The patches before and after stain normalization
 	   
-![alt text](https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png)
+ <img src="https://github.com/3dimaging/Accessory/blob/master/stain%20normalization.png" width="350">
+
 	   
 - flip
 - adding color noise (Method II)
 	   
-![alt text](https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png)
+ <img src="https://github.com/3dimaging/Accessory/blob/master/patch%20flip%20noise.png" width="350">
+
 	   
 	   
 	    
@@ -118,9 +121,11 @@ The patches before and after stain normalization
 6. Dropout, 0.1 rate 
 7. Convolution5, 1x1 kernel, stride 1, outputs 16x16x2 
 8. Deconvolution, 31 x 31 kernel, stride 16, outputs 256x256x2 
+
 -[FCN training](https://github.com/DIDSR/DeepLearningCamelyon/blob/master/3%20-%20Training%20Neural%20Network/Model%20training%20code%20for%20fully%20convolutional%20neural%20network)
 
 FCN prediction
+
 <img src="https://github.com/3dimaging/Accessory/blob/master/fcn-predicion%20tumor.png" width="250">
 
 <img src="https://github.com/3dimaging/Accessory/blob/master/fcn-prediction%202.png" width="250">
